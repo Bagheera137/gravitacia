@@ -6,18 +6,35 @@ wrap.world.create_world(500,600)
 grass=wrap.sprite.add("texstures",250,600,"grass")
 pacman=wrap.sprite.add("pacman",150,50,"player2")
 
-platform=wrap.sprite.add("mario-items",220,300,"moving_platform2")
-platform1=wrap.sprite.add("mario-items",150,360,"moving_platform2")
-platform2=wrap.sprite.add("mario-items",290,230,"moving_platform2")
-platform3=wrap.sprite.add("mario-items",220,100,"moving_platform2")
+
+
 platform_grass=wrap.sprite.add("mario-items",250,557,"moving_platform2",False)
 wrap.sprite.set_width(platform_grass,500)
 
 wrap.sprite.set_size(grass,500,500)
-cacoyto_list=[platform,platform1,platform2,platform3,platform_grass]
+cacoyto_list=[]
 decorations=[grass]
+cordinaty=[[220,300],[150,360],[290,230],[220,100],[280,0]]
 speed=0
 
+
+col=0
+carta="""
+____________________
+__________xx________
+_______*____________
+______xx____________
+"""
+for i in carta:
+    col=col+1
+    if i=="x":
+        pix=col*50
+        cordinaty.append([pix,pix])
+
+
+for i in cordinaty:
+    platform = wrap.sprite.add("mario-items", i[0], i[1], "moving_platform2")
+    cacoyto_list.append(platform)
 @wrap.always()
 def padenye(pos_x,pos_y,keys):
     global speed
@@ -29,10 +46,6 @@ def padenye(pos_x,pos_y,keys):
 
     if speed>=20:
         speed=20
-
-    #if bottom>550:
-    #   wrap.sprite.move_bottom_to(pacman,550)
-    #   speed=0
 
     for i in cacoyto_list:
         check_platform(i,keys)
@@ -55,13 +68,17 @@ def move(keys):
         wrap.sprite.move(pacman, 5, 0)
 
 
-def move_camera(number):
-    wrap.sprite.move(pacman,0,number)
+def move_camera(number_y,number_x):
+    wrap.sprite.move(pacman,number_x,number_y)
     for i in cacoyto_list:
-        wrap.sprite.move(i, 0, number)
+        wrap.sprite.move(i, number_x, number_y)
     for i in decorations:
-        wrap.sprite.move(i, 0, number)
+        wrap.sprite.move(i, number_x, number_y)
+
+
 def move_pacman():
     y=wrap.sprite.get_y(pacman)
-    colpix=300-y
-    move_camera(colpix)
+    x=wrap.sprite.get_x(pacman)
+    colpix_x=250-x
+    colpix_y=300-y
+    move_camera(colpix_y,colpix_x)
