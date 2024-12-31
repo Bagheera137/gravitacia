@@ -14,23 +14,29 @@ wrap.sprite.set_width(platform_grass,500)
 wrap.sprite.set_size(grass,500,500)
 cacoyto_list=[]
 decorations=[grass]
-cordinaty=[[220,300],[150,360],[290,230],[220,100],[280,0]]
+cordinaty=[]
+#cordinaty=[[220,300],[150,360],[290,230],[220,100],[280,0]]
 speed=0
 
 
+
 col=0
-carta="""
-____________________
-__________xx________
+line=0
+carta="""____________________
+__________x_________
 _______*____________
-______xx____________
+x_x_x_x_x_x_x_x_x_x_
 """
 for i in carta:
     col=col+1
     if i=="x":
-        pix=col*50
-        cordinaty.append([pix,pix])
-
+        pix_x=col*50
+        pix_y = line * 50
+        cordinaty.append([pix_x,pix_y])
+    if i == "\n":
+        line = line + 1
+        col=0
+print(cordinaty)
 
 for i in cordinaty:
     platform = wrap.sprite.add("mario-items", i[0], i[1], "moving_platform2")
