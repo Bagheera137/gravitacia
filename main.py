@@ -57,23 +57,29 @@ def padenye(pos_x,pos_y,keys):
 
 
     wrap.sprite.move(pacman, 0, speed)
+    for i in cacoyto_list:
+        check_platform(i, keys)
     speed = speed + 2
 
     if speed>=20:
         speed=20
 
-    for i in cacoyto_list:
-        check_platform(i,keys)
+
     move_pacman()
 def check_platform(platform,keys):
     global speed
     top_platform = wrap.sprite.get_top(platform)
     bottom = wrap.sprite.get_bottom(pacman)
-    if bottom>top_platform and wrap.sprite.is_collide_sprite(pacman,platform):
+    bottom_platform=wrap.sprite.get_bottom(platform)
+    if speed>0 and wrap.sprite.is_collide_sprite(pacman,platform):
         wrap.sprite.move_bottom_to(pacman, top_platform)
         speed = -7
         if wrap.K_SPACE in keys:
             speed = -20
+    elif speed<0 and wrap.sprite.is_collide_sprite(pacman,platform):
+        wrap.sprite.move_top_to(pacman, bottom_platform+2)
+
+
 
 @wrap.on_key_always(wrap.K_LEFT,wrap.K_RIGHT)
 def move(keys):
