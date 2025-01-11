@@ -1,55 +1,52 @@
 import random
 
 import wrap
-wrap.add_sprite_dir("mysprite")
-wrap.world.create_world(500,600)
-grass=wrap.sprite.add("texstures",250,600,"grass")
-pacman=wrap.sprite.add("pacman",150,50,"player2")
+
+def carta():
+    grass = wrap.sprite.add("texstures", 250, 600, "grass")
+    platform_grass = wrap.sprite.add("mario-items", 250, 557, "moving_platform2", False)
+    wrap.sprite.set_width(platform_grass, 500)
+    wrap.sprite.set_size(grass, 500, 500)
+    decorations.append(grass)
+
+
+    cordinaty = []
+
+    col=0
+    line=0
+    carta="""_______x____________
+    ____________________
+    ___________x________
+    ____________________
+    ______x_____________
+    ____________________
+    ________x___________
+    ____________________
+    _x___x______________
+    __x_________________
+    ____________________
+    ____________________
+    ____________________
+    """
+    for i in carta:
+        col=col+1
+        if i=="x":
+            pix_x=col*50
+            pix_y = line * 50
+            cordinaty.append([pix_x,pix_y])
+        if i == "\n":
+            line = line + 1
+            col=0
+    print(cordinaty)
+
+    for i in cordinaty:
+        platform = wrap.sprite.add("mario-items", i[0], i[1], "moving_platform2")
+        cacoyto_list.append(platform)
 
 
 
-platform_grass=wrap.sprite.add("mario-items",250,557,"moving_platform2",False)
-wrap.sprite.set_width(platform_grass,500)
-
-wrap.sprite.set_size(grass,500,500)
-cacoyto_list=[]
-decorations=[grass]
-cordinaty=[]
-#cordinaty=[[220,300],[150,360],[290,230],[220,100],[280,0]]
-speed=0
 
 
-
-col=0
-line=0
-carta="""_______x____________
-____________________
-___________x________
-______x_____________
-____________________
-____________________
-________x___________
-____________________
-_____x______________
-__x_________________
-____________________
-____________________
-____________________
-"""
-for i in carta:
-    col=col+1
-    if i=="x":
-        pix_x=col*50
-        pix_y = line * 50
-        cordinaty.append([pix_x,pix_y])
-    if i == "\n":
-        line = line + 1
-        col=0
-print(cordinaty)
-
-for i in cordinaty:
-    platform = wrap.sprite.add("mario-items", i[0], i[1], "moving_platform2")
-    cacoyto_list.append(platform)
 @wrap.always()
 def padenye(pos_x,pos_y,keys):
     global speed
@@ -81,11 +78,15 @@ def check_platform(platform,keys):
 
 
 
+
 @wrap.on_key_always(wrap.K_LEFT,wrap.K_RIGHT)
 def move(keys):
     global speed
+    right_platform=wrap.sprite.get_right(platform)
     if wrap.K_LEFT in keys:
         wrap.sprite.move(pacman,-5,0)
+        if wrap.sprite.is_collide_sprite(pacman,platform):
+            wrap.sprite.move_left_to(pacman,right_platform)
     elif wrap.K_RIGHT in keys:
         wrap.sprite.move(pacman, 5, 0)
 
@@ -104,3 +105,14 @@ def move_pacman():
     colpix_x=250-x
     colpix_y=300-y
     move_camera(colpix_y,colpix_x)
+
+wrap.add_sprite_dir("mysprite")
+wrap.world.create_world(500,600)
+
+pacman=wrap.sprite.add("pacman",150,50,"player2")
+decorations = []
+cacoyto_list=[]
+
+speed=0
+
+carta()
