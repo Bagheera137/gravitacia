@@ -5,49 +5,60 @@ import wrap
 def carta():
     global pacman
     grass = wrap.sprite.add("texstures", 250, 600, "grass")
-    platform_grass = wrap.sprite.add("mario-items", 250, 557, "moving_platform2", False)
-    wrap.sprite.set_width(platform_grass, 500)
     wrap.sprite.set_size(grass, 500, 500)
+    wrap.sprite.move_left_to(grass, 0)
     decorations.append(grass)
-
 
     cordinaty = []
 
     col=0
     line=0
     carta="""_______x____________
-    ____________________
-    ___________x________
-    ____________________
-    ______x_____________
-    ____________________
-    ________x___________
-    ____________________
-    _x___x______________
-    __x_________________
-    ________________0___
-    xxxxxxxxxxxxxxxxxxxx
-    ____________________
-    """
+____________________
+___________x________
+____________________
+______x_____________
+____________________
+________x___________
+____________________
+_x___x______________
+__x_________________
+_00__________________
+_xxxxxxxxxxxxxxxxxxx
+____________________
+"""
     for i in carta:
-        col=col+1
+
         if i=="x":
             pix_x=col*50
             pix_y = line * 50
             cordinaty.append([pix_x,pix_y])
+
+        if i == "0":
+            pix_x = col * 50
+            pix_y = line * 50
+            pacman = wrap.sprite.add("pacman", pix_x, pix_y, "player2")
+            wrap.sprite.move_left_to(pacman, pix_x)
+
+        col = col + 1
+
         if i == "\n":
             line = line + 1
             col=0
-        if i=="0":
-            pix_x=col*50
-            pix_y=line*50
-            pacman = wrap.sprite.add("pacman",pix_x ,pix_y, "player2")
+
+
+
+
     print(cordinaty)
 
     for i in cordinaty:
         platform = wrap.sprite.add("mario-items", i[0], i[1], "moving_platform2")
+        wrap.sprite.set_width(platform,50)
+        wrap.sprite.move_left_to(platform,i[0])
         cacoyto_list.append(platform)
 
+    a=wrap.sprite.get_left(grass)
+    print(a)
 def check_platform(platform,keys):
     global speed
     top_platform = wrap.sprite.get_top(platform)
