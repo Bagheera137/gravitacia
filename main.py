@@ -2,12 +2,25 @@ import random
 
 import wrap
 
+
+
+
+
+
+
 def carta():
     global pacman
-    grass = wrap.sprite.add("texstures", 250, 600, "grass")
+    grass = wrap.sprite.add("texstures", 250, 600, "forest")
     wrap.sprite.set_size(grass, 500, 500)
-    wrap.sprite.move_left_to(grass, 0)
     decorations.append(grass)
+    for i in range(5):
+        grass1 = wrap.sprite.add("texstures", 250, 600, "forest")
+        decorations.append(grass1)
+        wrap.sprite.set_size(grass1, 500, 500)
+        right = wrap.sprite.get_right(grass)
+        grass = grass1
+        wrap.sprite.move_left_to(grass1, right)
+
 
     cordinaty = []
 
@@ -24,7 +37,7 @@ ____________________
 _x___x______________
 __x_________________
 _00__________________
-_xxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxx
 ____________________
 """
     for i in carta:
