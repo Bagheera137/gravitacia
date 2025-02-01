@@ -3,27 +3,11 @@ import random
 import wrap
 
 
-
-
-
-
-
 def carta():
     global pacman
-    grass = wrap.sprite.add("texstures", 250, 600, "forest")
-    wrap.sprite.set_size(grass, 500, 500)
-    decorations.append(grass)
-    for i in range(5):
-        grass1 = wrap.sprite.add("texstures", 250, 600, "forest")
-        decorations.append(grass1)
-        wrap.sprite.set_size(grass1, 500, 500)
-        right = wrap.sprite.get_right(grass)
-        grass = grass1
-        wrap.sprite.move_left_to(grass1, right)
-
 
     cordinaty = []
-
+    pix_y=0
     col=0
     line=0
     carta="""_______x____________
@@ -36,28 +20,42 @@ ________x___________
 ____________________
 _x___x______________
 __x_________________
-_00__________________
-xxxxxxxxxxxxxxxxxxxx
-____________________
-"""
+__0_________________
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+____________________"""
     for i in carta:
 
         if i=="x":
             pix_x=col*50
-            pix_y = line * 50
             cordinaty.append([pix_x,pix_y])
 
         if i == "0":
             pix_x = col * 50
-            pix_y = line * 50
-            pacman = wrap.sprite.add("pacman", pix_x, pix_y, "player2")
-            wrap.sprite.move_left_to(pacman, pix_x)
+            pacman_x=pix_x
+            pacman_y=pix_y
 
         col = col + 1
 
         if i == "\n":
             line = line + 1
             col=0
+            pix_y = line * 50
+    print(pix_y)
+    grass = wrap.sprite.add("texstures", 250, 500, "forest")
+    wrap.sprite.set_size(grass, 500, 500)
+    wrap.sprite.move_bottom_to(grass, pix_y)
+    decorations.append(grass)
+
+    grass1 = wrap.sprite.add("texstures", 250, 500, "forest")
+    decorations.append(grass1)
+    wrap.sprite.set_size(grass1, 500, 500)
+    right = wrap.sprite.get_right(grass)
+    wrap.sprite.move_bottom_to(grass1, pix_y)
+    wrap.sprite.move_left_to(grass1, right)
+    grass = grass1
+
+    pacman = wrap.sprite.add("pacman", pacman_x, pacman_y, "player2")
+    wrap.sprite.move_left_to(pacman, pacman_x)
 
 
 
@@ -71,7 +69,7 @@ ____________________
         cacoyto_list.append(platform)
 
     a=wrap.sprite.get_left(grass)
-    print(a)
+
 def check_platform(platform,keys):
     global speed
     top_platform = wrap.sprite.get_top(platform)
@@ -152,3 +150,8 @@ def padenye(pos_x,pos_y,keys):
     if speed>=20:
         speed=20
     move_pacman()
+
+
+
+import wrap_py
+wrap_py.app.start()
