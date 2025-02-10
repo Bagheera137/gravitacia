@@ -4,7 +4,7 @@ import wrap
 
 
 def carta():
-    global pacman
+    global pacman, grass,grass1
 
     cordinaty = []
     pix_y=0
@@ -41,23 +41,25 @@ ____________________"""
             col=0
             pix_y = line * 50
     print(pix_y)
+
+
     grass = wrap.sprite.add("texstures", 250, 500, "forest")
     wrap.sprite.set_size(grass, 500, 500)
     wrap.sprite.move_bottom_to(grass, pix_y)
     decorations.append(grass)
-
     grass1 = wrap.sprite.add("texstures", 250, 500, "forest")
     decorations.append(grass1)
     wrap.sprite.set_size(grass1, 500, 500)
     right = wrap.sprite.get_right(grass)
     wrap.sprite.move_bottom_to(grass1, pix_y)
     wrap.sprite.move_left_to(grass1, right)
-    grass = grass1
+
+
+
+
 
     pacman = wrap.sprite.add("pacman", pacman_x, pacman_y, "player2")
     wrap.sprite.move_left_to(pacman, pacman_x)
-
-
 
 
     print(cordinaty)
@@ -67,8 +69,6 @@ ____________________"""
         wrap.sprite.set_width(platform,50)
         wrap.sprite.move_left_to(platform,i[0])
         cacoyto_list.append(platform)
-
-    a=wrap.sprite.get_left(grass)
 
 def check_platform(platform,keys):
     global speed
@@ -86,13 +86,26 @@ def check_platform(platform,keys):
 
 
 def move_camera(number_y,number_x):
+    global grass, grass1
     wrap.sprite.move(pacman,number_x,number_y)
     for i in cacoyto_list:
         wrap.sprite.move(i, number_x, number_y)
     for i in decorations:
         wrap.sprite.move(i, number_x, number_y)
 
-
+    left=wrap.sprite.get_left(grass)
+    right1 = wrap.sprite.get_right(grass1)
+    if right1 < 500:
+        wrap.sprite.move_left_to(grass, right1)
+        c=grass
+        grass=grass1
+        grass1=c
+        print(wrap.sprite.get_right(grass),wrap.sprite.get_right(grass1))
+    elif left>0:
+        wrap.sprite.move_right_to(grass1, left)
+        c = grass
+        grass = grass1
+        grass1 = c
 def move_pacman():
     y=wrap.sprite.get_y(pacman)
     x=wrap.sprite.get_x(pacman)
@@ -106,8 +119,10 @@ wrap.world.create_world(500,600)
 decorations = []
 cacoyto_list=[]
 pacman=None
-carta()
+grass=None
+grass1=None
 
+carta()
 
 
 
