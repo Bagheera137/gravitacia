@@ -4,7 +4,7 @@ import wrap
 
 
 def carta():
-    global pacman, grass,grass1
+    global pacman, grass,grass1, sum
 
     cordinaty = []
     pix_y=0
@@ -43,17 +43,23 @@ ____________________"""
     print(pix_y)
 
 
+    width=random.randint(10,250)
     grass = wrap.sprite.add("texstures", 250, 500, "forest")
-    wrap.sprite.set_size(grass, 500, 500)
+    wrap.sprite.set_size(grass,width , 500)
     wrap.sprite.move_bottom_to(grass, pix_y)
     decorations.append(grass)
-    grass1 = wrap.sprite.add("texstures", 250, 500, "forest")
-    decorations.append(grass1)
-    wrap.sprite.set_size(grass1, 500, 500)
-    right = wrap.sprite.get_right(grass)
-    wrap.sprite.move_bottom_to(grass1, pix_y)
-    wrap.sprite.move_left_to(grass1, right)
+    sum=width
 
+    while sum<750:
+        width1 = random.randint(10, 250)
+        grass1 = wrap.sprite.add("texstures", 250, 500, "forest")
+        decorations.append(grass1)
+        wrap.sprite.set_size(grass1,width1, 500)
+        right = wrap.sprite.get_right(grass)
+        wrap.sprite.move_bottom_to(grass1, pix_y)
+        wrap.sprite.move_left_to(grass1, right)
+        grass=grass1
+        sum=sum+width1
 
 
 
@@ -93,19 +99,16 @@ def move_camera(number_y,number_x):
     for i in decorations:
         wrap.sprite.move(i, number_x, number_y)
 
-    left=wrap.sprite.get_left(grass)
-    right1 = wrap.sprite.get_right(grass1)
+    left=wrap.sprite.get_left(decorations[0])
+    right1 = wrap.sprite.get_right(decorations[-1])
     if right1 < 500:
-        wrap.sprite.move_left_to(grass, right1)
-        c=grass
-        grass=grass1
-        grass1=c
-        print(wrap.sprite.get_right(grass),wrap.sprite.get_right(grass1))
+        wrap.sprite.move_left_to(decorations[0], right1)
+        decorations.append(decorations[0])
+        del decorations[0]
     elif left>0:
-        wrap.sprite.move_right_to(grass1, left)
-        c = grass
-        grass = grass1
-        grass1 = c
+        wrap.sprite.move_right_to(decorations[-1], left)
+        decorations.insert(0,decorations[-1])
+        del decorations[-1]
 def move_pacman():
     y=wrap.sprite.get_y(pacman)
     x=wrap.sprite.get_x(pacman)
@@ -121,7 +124,7 @@ cacoyto_list=[]
 pacman=None
 grass=None
 grass1=None
-
+sum=0
 carta()
 
 
